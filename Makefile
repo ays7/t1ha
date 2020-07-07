@@ -29,7 +29,7 @@ TARGET_ARCH_ia32 ?= $(shell (export LC_ALL=C; ($(CC) --version 2>&1; $(CC) -v 2>
 TARGET_ARCH_ppc ?= $(shell (export LC_ALL=C; ($(CC) --version 2>&1; $(CC) -v 2>&1) | grep -q -i -e '^Target: powerpc.*' && echo yes || echo no))
 
 OBJ_LIST := t1ha0.o t1ha1.o t1ha2.o t1ha0_selfcheck.o t1ha1_selfcheck.o t1ha2_selfcheck.o t1ha_selfcheck.o t1ha_selfcheck_all.o
-BENCH_EXTRA := bench.o mera.o test.o 4bench_xxhash.o 4bench_stadtx.o  4bench_wyhash.o 4bench_highwayhash_test.o 4bench_highwayhash_pure_c.o 4bench_highwayhash_portable.o
+BENCH_EXTRA := bench.o mera.o test.o 4bench_xxhash.o 4bench_xxhash_disp.o 4bench_stadtx.o  4bench_wyhash.o 4bench_highwayhash_test.o 4bench_highwayhash_pure_c.o 4bench_highwayhash_portable.o
 ifeq ($(TARGET_ARCH_e2k),yes)
 TARGET_ARCH := e2k
 CFLAGS += -mtune=native
@@ -133,6 +133,9 @@ test.o: t1ha.h tests/common.h tests/mera.h tests/test.c \
 4bench_xxhash.o: tests/xxhash/xxhash.h tests/xxhash/xxhash.c \
 		tests/xxhash/xxh_thunk.c tests/common.h Makefile
 	$(CC) $(CFLAGS_TEST) -Wno-error -c -o $@ tests/xxhash/xxh_thunk.c
+4bench_xxhash_disp.o: tests/xxhash/xxhash.h tests/xxhash/xxhash.c \
+		tests/xxhash/xxh_x86dispatch.c tests/common.h Makefile
+	$(CC) $(CFLAGS_TEST) -Wno-error -c -o $@ tests/xxhash/xxh_x86dispatch.c
 
 4bench_stadtx.o: tests/common.h tests/stadtx/stadtx_hash.h \
 		tests/stadtx/stadtx_thunk.c tests/common.h Makefile

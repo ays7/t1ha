@@ -27,6 +27,7 @@
 #define XXH_VECTOR 0
 
 #include "xxhash.h"
+#include "xxh_x86dispatch.h"
 
 uint64_t XXH_32(const void *input, size_t length, uint64_t seed) {
   return XXH32(input, length, (uint32_t)seed);
